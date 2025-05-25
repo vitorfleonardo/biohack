@@ -10,6 +10,10 @@ const options = {
     },
     servers: [
       {
+        url: 'https://biohack.onrender.com',
+        description: 'Servidor Render - Produção',
+      },
+      {
         url: 'http://localhost:3000',
         description: 'Servidor Local',
       },
