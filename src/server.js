@@ -22,3 +22,9 @@ app.listen(PORT, () => {
   console.log(`Servidor rodando em http://localhost:${PORT}`);
   console.log(`Documentação Swagger em http://localhost:${PORT}/api-docs`);
 });
+
+app.get('/', (req, res) => {
+  res.send(
+    'API Biohack está rodando 🚀 Acesse /api-docs para ver a documentação'
+  );
+});
