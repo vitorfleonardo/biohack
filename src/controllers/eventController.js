@@ -2,21 +2,21 @@ const eventModel = require('../models/eventModel');
 const { v4: uuidv4 } = require('uuid');
 
 module.exports = {
-  getAllEvents: (req, res) => {
-    const events = eventModel.getAll();
+  getAllEvents: async (req, res) => {
+    const events = await eventModel.getAll();
     res.status(200).json(events);
   },
 
-  getEventById: (req, res) => {
+  getEventById: async (req, res) => {
     const { id } = req.params;
-    const event = eventModel.getById(id);
+    const event = await eventModel.getById(id);
     if (!event) {
       return res.status(404).json({ message: 'Evento não encontrado' });
     }
     res.status(200).json(event);
   },
 
-  createEvent: (req, res) => {
+  createEvent: async (req, res) => {
     const {
       title,
       description,
@@ -27,7 +27,6 @@ module.exports = {
       isCompleted,
     } = req.body;
 
-    // Validação simples
     if (!title || !startDate || !endDate || !startTime || !endTime) {
       return res.status(400).json({
         message: 'Título, datas e horários são obrigatórios',
@@ -35,7 +34,6 @@ module.exports = {
     }
 
     const newEvent = {
-      id: uuidv4(),
       title,
       description: description || '',
       startDate,
@@ -45,11 +43,11 @@ module.exports = {
       isCompleted: isCompleted || false,
     };
 
-    const createdEvent = eventModel.create(newEvent);
+    const createdEvent = await eventModel.create(newEvent);
     res.status(201).json(createdEvent);
   },
 
-  updateEvent: (req, res) => {
+  updateEvent: async (req, res) => {
     const { id } = req.params;
     const {
       title,
@@ -61,7 +59,7 @@ module.exports = {
       isCompleted,
     } = req.body;
 
-    const updated = eventModel.update(id, {
+    const updated = await eventModel.update(id, {
       title,
       description,
       startDate,
@@ -78,9 +76,9 @@ module.exports = {
     res.status(200).json(updated);
   },
 
-  deleteEvent: (req, res) => {
+  deleteEvent: async (req, res) => {
     const { id } = req.params;
-    const removed = eventModel.remove(id);
+    const removed = await eventModel.remove(id);
 
     if (!removed) {
       return res.status(404).json({ message: 'Evento não encontrado' });
